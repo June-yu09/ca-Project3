@@ -1,17 +1,19 @@
 import { useParams, useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 
-
-function Detail({detailData}) {
+function Detail() {
     const { id } = useParams();
     const history = useHistory();
     const divStyle = {
         width: '450px',
         height: '450px'
     }
-    let myProduct = detailData.find(e=>{
-                return e.id == id;
+    let products = useSelector(state=> state.allProducts.products);
+
+    let myProduct = products.find(e=>{
+                return e.id === Number(id);
             })
 
     return (

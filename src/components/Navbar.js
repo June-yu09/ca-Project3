@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 
 
@@ -50,8 +50,8 @@ function Navbar() {
                 }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}>
-                    <MenuItem><Link to='/'>Home</Link></MenuItem>
-                    <MenuItem><Link to='/about'>About us</Link></MenuItem>
+                    <MenuItem><NavLink exact to='/'>Home</NavLink></MenuItem>
+                    <MenuItem><NavLink exact to='/about'>About us</NavLink></MenuItem>
 
 
                 </Menu>

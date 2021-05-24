@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { setProducts } from '../redux/actions';
+
 
 const useStyles = makeStyles({
     root:{
@@ -17,40 +20,54 @@ const divStyle = {
     height: '450px'
 }
 
-function Products({ apiData }) {
+
+const Products = ()=>{
+    const products = useSelector(state=>state);
+    const dispatch = useDispatch();
+    const fetchApi = async () =>{
+        const response = await axios.get('https://fakestoreapi.com/products');
+        dispatch(setProducts(response.data));
+    }
+
+    useEffect(()=>{
+        fetchApi();
+    },[])
+
+    return (
+        <>
+            <ProductComponent />
+        </>
+    )
+}
+
+
+
+function ProductComponent() {
+    let products = useSelector(state=> state.allProducts.products);
     let classes = useStyles();
+    let listing = products.map(product =>{
+        let { id, title, image, price, category } = product;
+        return (
+            <>
+                <Card className={classes.root} key={id}>
+                    <Link to={`/products/${id}`}>
+                        <img style={divStyle} src={image} alt='item'/>
+                        <CardContent>
+                            <Typography component='h2'> {title} </Typography>
+                            <Typography component='h5'> {price} </Typography>
+                            <Typography component='h5'> {category} </Typography>
+                        </CardContent>
+                        
+                    </Link>
+                </Card>
+
+            </>
+        )
+    })
+
     return (
         <div>
-        {/* 카테고리별 필터넣기 */}
-        {/* 제품들 나열을 카드로만들기 */}
-
-        {
-            apiData.map((d)=>{
-                return (
-                    <Card className={classes.root}>
-                        <Link to={`/products/${d.id}`}>
-                            <img style={divStyle} src={d.image} alt='item'/>
-                            {/* <CardMedia 
-                                className={classes.media}
-                                component='img'
-                                alt='item'
-                                height='400'
-                                src={d.image}
-                                title='item'
-                                Images are zoomed cause CardMedia put image as background.
-                            /> */ }
-                            <CardContent>
-                                <Typography component='h2'> {d.title} </Typography>
-                            </CardContent>
-
-
-                            
-                        </Link>
-                    </Card>
-                );
-            })
-        }
-            
+            {listing}
         </div>
     )
 }

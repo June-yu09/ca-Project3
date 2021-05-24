@@ -12,29 +12,8 @@ import About from './screen/About';
 
 function App() {
 
-  const [apiData, setApiData] = useState([]);
   const [detailData, setDetail] = useState([]);
-  const [clicked, setClicked] = useState(false);
-  const [apiAddress, setApi] = useState('https://fakestoreapi.com/products?limit=9');
-
-
-  const fetchApi = () => {
-    axios.get(apiAddress)
-    .then((result)=>{
-      setApiData(result.data);
-    })
-  }
-  const fetchApiDetail = () =>{
-    axios.get('https://fakestoreapi.com/products')
-    .then((result)=>{
-      setDetail(result.data);
-    })
-  }
-
-  useEffect(() => {
-    fetchApi();
-    fetchApiDetail();
-  }, [apiAddress])
+  
 
   
 
@@ -48,20 +27,12 @@ function App() {
 
       <Switch>
         <Route exact path='/'>
-            <Products apiData={ apiData } />
-            {
-              clicked !== true &&
-              <Button variant={ 'outlined' } onClick={()=>{
-                setApi('https://fakestoreapi.com/products');
-                setClicked(true);
-              }}>Show more</Button>
-            }
+            <Products />
+            
         </Route>
         <Route path='/products/:id'>
-          {
-            detailData.length!==0&&
-            <Detail detailData={ detailData }/>
-          }
+          
+          <Detail />
 
         </Route>
         <Route path='/about'>
