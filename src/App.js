@@ -1,13 +1,12 @@
 /* eslint-disabled */
 import './App.css';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import Products from './components/Products';
 import { Route, Link, Switch } from 'react-router-dom';
-import { Button } from '@material-ui/core';
 import Detail from './components/Detail';
 import Navbar from './components/Navbar';
 import About from './screen/About';
+import Register from './components/Register';
 
 
 function App() {
@@ -30,13 +29,17 @@ function App() {
             <Products />
             
         </Route>
-        <Route path='/products/:id'>
+        <Route path='/products/:productId'>
           
           <Detail />
 
         </Route>
         <Route path='/about'>
           <About />
+        </Route>
+
+        <Route path='/register'>
+          <Register />
         </Route>
 
       </Switch>

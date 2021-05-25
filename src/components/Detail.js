@@ -1,32 +1,64 @@
 import { useParams, useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import Typography from '@material-ui/core/Typography';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { selectedProduct, removeSelectedProduct } from '../redux/actions';
 
 
 function Detail() {
-    const { id } = useParams();
-    const history = useHistory();
     const divStyle = {
         width: '450px',
         height: '450px'
     }
-    let products = useSelector(state=> state.allProducts.products);
 
-    let myProduct = products.find(e=>{
-                return e.id === Number(id);
-            })
+    const { productId } = useParams();
+    const product = useSelector(state=> state.product);
+    const { id, title, image, price, description, quan } = product;
+    const dispatch = useDispatch();
+    const history = useHistory();
+    
+    const fetchDetail =async (idNum)=>{
+        let response = await axios.get(`https://fakestoreapi.com/products/${idNum}`);
+        dispatch(selectedProduct(response.data));
+    }
+
+    useEffect(()=>{
+        
+        fetchDetail(productId);
+        
+        return ()=>{
+            dispatch(removeSelectedProduct())
+        }
+    },[productId]);
 
     return (
-        <div>        
-            <h2>{myProduct.title}</h2>
-            <img style={divStyle} src={myProduct.image} alt='productImage' />
-            <h5>Price : { myProduct.price }</h5>
-            <p>{ myProduct.description }</p>
+        <div>   
+
+            {
+                !title?
+                <Typography component='h2'> Loading </Typography>:
+                <>
+                    <h2>{title}</h2>
+                    <h5>product ID : {id}</h5>
+                    <img style={divStyle} src={image} alt='productImage' />
+                    <h5>Price : { price }</h5>
+                    <p>{ description }</p>
+                    <p>Stock : {quan} </p>
+                            
+                    <Button variant='outlined' onClick={()=>{ 
+
+                     }}>Add to Cart</Button>
+
+                    <Button variant='outlined' onClick={()=>{ history.goBack() }}>Back to Homepage</Button>
+                    {/* 나중에 하단에오는 스틱바 만들면 삭제하기 */}
                     
+                </>
+
+            }     
             
-            <Button variant='outlined' onClick={()=>{ history.goBack() }}>Back to Homepage</Button>
-            {/* 나중에 하단에오는 스틱바 만들면 삭제하기 */}
-                    
             
         </div>
     )
