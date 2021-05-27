@@ -24,16 +24,17 @@ const useStyles = (theme) =>({
     
   });
 
-class Register extends Component {
+class SignIn extends Component {
     state = {
         email:'',
         password:'',
-        confirmPassword:'',
     }
     handleChange = e => {
         this.setState({
             [e.target.id] : e.target.value,
         })
+        console.log(e.target.value)
+        console.log(e.target.id)
     }
     handleSubmit = e =>{
         e.preventDefault();
@@ -49,25 +50,23 @@ class Register extends Component {
                     
                     <CardContent>
                         <form onSubmit={this.handleSubmit} className={classes.root} noValidate autoComplete="off">
-                            <Typography align='center' className={classes.textField} variant="h5" component="h2">Register</Typography>
+                            <Typography align='center' className={classes.textField} variant="h5" component="h2">Sign In</Typography>
     
                             <Typography align='center' className={classes.textField} variant="body2" component="p">Email</Typography>
                                 <TextField onChange={this.handleChange} autoFocus className={classes.textField} required id="email" label="Email" variant="outlined"/>
                             <Typography align='center' className={classes.textField} variant="body2" component="p">Password</Typography>
                                 <TextField onChange={this.handleChange} className={classes.textField} required id="password" label="Password" variant="outlined"/>
-                            <Typography align='center' className={classes.textField} variant="body2" component="p">Confirm Password</Typography>
-                                <TextField onChange={this.handleChange} className={classes.textField} required id="confirmPassword" label="confirmPassword" variant="outlined"/>
-                            <Button type='submit' variant="contained" color="primary">Register</Button>
+                            <Button type='submit' variant="contained" color="primary">Login</Button>
 
                         </form>
     
                     </CardContent>
                 </Card>
-                <Typography component='h3'>Already have an account? Sign In</Typography>
+                <Typography component='h3'>You don't have an account? Sign Up</Typography>
             </Container>
         )
     }
 }
 
 
-export default withStyles(useStyles)(Register);
+export default withStyles(useStyles)(SignIn);

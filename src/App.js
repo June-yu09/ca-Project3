@@ -7,6 +7,7 @@ import Detail from './components/Detail';
 import Navbar from './components/Navbar';
 import About from './screen/About';
 import Register from './components/Register';
+import SignIn from './components/SignIn';
 
 
 function App() {
@@ -25,23 +26,13 @@ function App() {
 
 
       <Switch>
-        <Route exact path='/'>
-            <Products />
-            
-        </Route>
-        <Route path='/products/:productId'>
+
+        <Route exact path='/' component={Products} />   
+        <Route path='/products/:productId' component={Detail} />
+        <Route path='/about' component={About} /> 
+        <Route path='/register' component={Register} />
+        <Route path='/signin' component={SignIn} />
           
-          <Detail />
-
-        </Route>
-        <Route path='/about'>
-          <About />
-        </Route>
-
-        <Route path='/register'>
-          <Register />
-        </Route>
-
       </Switch>
       
       {/* 스티키푸터만들기(뒤로가기, 채팅) */}
