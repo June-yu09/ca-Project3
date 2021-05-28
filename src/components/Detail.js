@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { selectedProduct, removeSelectedProduct } from '../redux/actions';
+import { selectedProduct, removeSelectedProduct, addToCart } from '../redux/actions/actions';
 
 
 function Detail() {
@@ -49,7 +49,7 @@ function Detail() {
                     <p>Stock : {quan} </p>
                             
                     <Button variant='outlined' onClick={()=>{ 
-
+                        dispatch(addToCart(product));
                      }}>Add to Cart</Button>
 
                     <Button variant='outlined' onClick={()=>{ history.goBack() }}>Back to Homepage</Button>

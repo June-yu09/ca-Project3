@@ -57,8 +57,23 @@ function Navbar() {
                 </Menu>
 
                 <Typography className={classes.title}>
-                    Nerd Shop
+                <NavLink exact to='/'>Shop B</NavLink>
                 </Typography>
+
+                <Typography>
+                <NavLink exact to='/signin'>SignIn</NavLink>
+                </Typography>
+                
+                <Typography>
+                <NavLink exact to='/favorites'>💙</NavLink>
+                </Typography>
+                <Typography>
+                <NavLink exact to='/register'>Register</NavLink>
+                </Typography>
+                <Typography>
+                <NavLink exact to='/cart'>Cart</NavLink>
+                </Typography>
+                
 
                 </Toolbar>
             </AppBar>

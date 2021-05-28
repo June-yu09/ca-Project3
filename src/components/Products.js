@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { setProducts } from '../redux/actions';
+import { setProducts, favoriteProduct } from '../redux/actions/actions';
 
 
 const useStyles = makeStyles({
@@ -22,7 +23,6 @@ const divStyle = {
 
 
 const Products = ()=>{
-    const products = useSelector(state=>state);
     const dispatch = useDispatch();
     const fetchApi = async () =>{
         const response = await axios.get('https://fakestoreapi.com/products');
@@ -44,6 +44,7 @@ const Products = ()=>{
 
 function ProductComponent() {
     let products = useSelector(state=> state.allProducts.products);
+    const dispatch = useDispatch();
     let classes = useStyles();
     let listing = products.map(product =>{
         let { id, title, image, price, category } = product;
@@ -59,6 +60,11 @@ function ProductComponent() {
                         </CardContent>
                         
                     </Link>
+                    <Button onClick={()=>{
+                        dispatch(favoriteProduct(product))
+                    }} variant="contained" color="success">Add to Favorite</Button>
+
+
                 </Card>
 
             </>

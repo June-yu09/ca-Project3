@@ -1,10 +1,10 @@
-import { ActionTypes } from './actionTypes';
+import { ActionTypes } from '../actionTypes';
 
-const initialState = {
+const initState = {
     products : []
 }
 
-export const productReducer = (state=initialState, action) => {
+export const productReducer = (state=initState, action) => {
     switch (action.type) {
         case ActionTypes.SET_PRODUCTS:
             let productList = {...state, products : action.payload};
@@ -16,7 +16,6 @@ export const productReducer = (state=initialState, action) => {
             return state;
     }
 }
-
 export const selectedProductReducer = (state={}, action) =>{
     switch (action.type) {
         case ActionTypes.SELECTED_PRODUCT:

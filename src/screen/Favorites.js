@@ -21,10 +21,10 @@ const divStyle = {
 
 
 function Favorites() {
-    const carts = useSelector(state=>state.cart.products)
+    const favs = useSelector(state=>state.favorites.products)
     let classes = useStyles();
-    const listing = carts.map(cart=>{
-        let { id, title, image, price, category, quan } = cart;
+    const listing = favs.map(fav=>{
+        let { id, title, image, price, category } = fav;
         return (
             <Card className={classes.root} key={id}>
                     <img style={divStyle} src={image} alt='item'/>
@@ -32,8 +32,6 @@ function Favorites() {
                         <Typography component='h2'> {title} </Typography>
                         <Typography component='h5'> {price} </Typography>
                         <Typography component='h5'> {category} </Typography>
-                        <Typography component='h5'>stock: {quan} </Typography>
-
                     </CardContent>
                     
 
@@ -43,12 +41,12 @@ function Favorites() {
 
     return (
         <div>
-            This is Shopping Cart
+            This is favorites page
 
             {
-                carts?
+                favs?
                 <div>{listing}</div>:
-                <h1>Your Cart is empty</h1>
+                <h3>Favorite List is empty</h3>
             }
             
             

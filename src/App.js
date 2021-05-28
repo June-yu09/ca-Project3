@@ -1,18 +1,18 @@
 /* eslint-disabled */
 import './App.css';
-import { useState } from 'react';
 import Products from './components/Products';
-import { Route, Link, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Detail from './components/Detail';
 import Navbar from './components/Navbar';
 import About from './screen/About';
-import Register from './components/Register';
-import SignIn from './components/SignIn';
-
+import Register from './screen/Register';
+import SignIn from './screen/SignIn';
+import Favorites from './screen/Favorites';
+import Cart from './screen/Cart'
+;
 
 function App() {
 
-  const [detailData, setDetail] = useState([]);
   
 
   
@@ -20,7 +20,6 @@ function App() {
   return (
     <div className="App">
       <Navbar />
-      {/* 네비게이션바 만들기(로고클릭하면 홈으로가는버튼, 장바구니)+ 페이지간 이동은 라우터의 link이용 */}
       {/* 좀 있어보이게 점보트론넣기 */}
 
 
@@ -32,6 +31,11 @@ function App() {
         <Route path='/about' component={About} /> 
         <Route path='/register' component={Register} />
         <Route path='/signin' component={SignIn} />
+        <Route path='/favorites' component={Favorites} />
+        <Route path='/cart' component={Cart} />
+
+
+
           
       </Switch>
       
