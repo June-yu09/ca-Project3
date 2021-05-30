@@ -1,17 +1,26 @@
 import { ActionTypes } from '../actionTypes';
 
 const initState = {
-    products : []
+    products : [],
+    isLoading : false,
+    error : [],
 }
 
 export const productReducer = (state=initState, action) => {
     switch (action.type) {
-        case ActionTypes.SET_PRODUCTS:
+        case ActionTypes.FETCH_PRODUCTS_REQUEST:
+            return {...state, isLoading : action.payload};
+
+        case ActionTypes.FETCH_PRODUCTS_SUCCESS:
             let productList = {...state, products : action.payload};
             let newList = productList.products.map(product => {
                 return {...product, quan: 5};
             })
-            return {...state, products : [...newList]};
+            return {...state, products : [...newList], isLoading : false};
+        
+        case ActionTypes.FETCH_PRODUCTS_FAIL:
+            return {...state, isLoading: false , error: action.payload}
+
         default:
             return state;
     }

@@ -6,8 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import { setProducts, favoriteProduct } from '../redux/actions/actions';
+import { fetchProducts, favoriteProduct } from '../redux/actions/actions';
 
 
 const useStyles = makeStyles({
@@ -24,58 +23,61 @@ const divStyle = {
 
 const Products = ()=>{
     const dispatch = useDispatch();
-    const fetchApi = async () =>{
-        const response = await axios.get('https://fakestoreapi.com/products');
-        dispatch(setProducts(response.data));
-    }
-
     useEffect(()=>{
-        fetchApi();
+        dispatch(fetchProducts());
     },[])
 
-    return (
-        <>
-            <ProductComponent />
-        </>
-    )
-}
-
-
-
-function ProductComponent() {
-    let products = useSelector(state=> state.allProducts.products);
-    const dispatch = useDispatch();
+    let {products, isLoading, error} = useSelector(state=> ({
+        products : state.allProducts.products,
+        isLoading : state.allProducts.isLoading,
+        error : state.allProducts.error
+    }));
     let classes = useStyles();
     let listing = products.map(product =>{
         let { id, title, image, price, category } = product;
         return (
             <>
-                <Card className={classes.root} key={id}>
-                    <Link to={`/products/${id}`}>
-                        <img style={divStyle} src={image} alt='item'/>
-                        <CardContent>
-                            <Typography component='h2'> {title} </Typography>
-                            <Typography component='h5'> {price} </Typography>
-                            <Typography component='h5'> {category} </Typography>
-                        </CardContent>
-                        
-                    </Link>
-                    <Button onClick={()=>{
-                        dispatch(favoriteProduct(product))
-                    }} variant="contained" color="success">Add to Favorite</Button>
-
-
-                </Card>
-
+            <Card className={classes.root} key={id}>
+                <Link to={`/products/${id}`}>
+                    <img style={divStyle} src={image} alt='item'/>
+                    <CardContent>
+                        <Typography component='h2'> {title} </Typography>
+                        <Typography component='h5'> {price} </Typography>
+                        <Typography component='h5'> {category} </Typography>
+                    </CardContent>
+                    
+                </Link>
+                <Button onClick={()=>{
+                    dispatch(favoriteProduct(product))
+                }} variant="contained" color="success">Add to Favorite</Button>
+            </Card>
             </>
         )
     })
 
     return (
         <div>
-            {listing}
+
+        {
+        isLoading?
+        <>
+        <Typography component='h1'> Loading </Typography>
+        <Typography component='h1'> Loading </Typography>
+        <Typography component='h1'> Loading </Typography>
+        <Typography component='h1'> Loading </Typography>
+        <Typography component='h1'> Loading </Typography>
+
+        </>:
+        <>{listing}</>
+        }
+
+        {
+            error.length!==0 && <div> Something went wrong {error} </div>
+        }
         </div>
     )
 }
+
+
 
 export default Products;
