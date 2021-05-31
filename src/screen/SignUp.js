@@ -6,7 +6,10 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { withStyles } from "@material-ui/core/styles";
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
+import { signUp } from '../redux/actions/actions';
+import { connect } from 'react-redux';
+
 
 
 
@@ -25,7 +28,7 @@ const useStyles = (theme) =>({
     
   });
 
-class Register extends Component {
+class SignUp extends Component {
     state = {
         email:'',
         password:'',
@@ -39,11 +42,18 @@ class Register extends Component {
     handleSubmit = e =>{
         e.preventDefault();
         console.log(this.state);
+        if(this.state.password !== this.state.confirmPassword){
+            alert('Please put password correctly')
+        }else{
+            this.props.signUpEvent(this.state);
+        }
     }
 
 
     render (){
         const { classes } = this.props;
+        
+        
         return (
             <Container>
                 <Card className={classes.root}>
@@ -69,6 +79,18 @@ class Register extends Component {
         )
     }
 }
+const mapStateToProps = (state)=>{
+    let auth = state.firebase.auth;
+    return {
+        auth : auth
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        signUpEvent : (credentials)=> dispatch(signUp(credentials))
+    }
+}
 
 
-export default withStyles(useStyles)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(SignUp));

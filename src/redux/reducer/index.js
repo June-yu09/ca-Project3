@@ -3,6 +3,8 @@ import authReducer from './authReducer';
 import favoritesReducer from './favoritesReducer';
 import cartReducer from './cartReducer';
 import { combineReducers } from 'redux';
+import { firebaseReducer } from 'react-redux-firebase';
+import { firestoreReducer } from 'redux-firestore';
 
 const reducers = combineReducers({
     allProducts : productReducer,
@@ -10,6 +12,8 @@ const reducers = combineReducers({
     auth : authReducer,
     favorites : favoritesReducer,
     cart : cartReducer,
+    firebase : firebaseReducer,
+    firestore : firestoreReducer,
 })
 
 

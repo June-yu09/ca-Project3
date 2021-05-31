@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -27,26 +27,31 @@ const Products = ()=>{
         dispatch(fetchProducts());
     },[])
 
-    let {products, isLoading, error} = useSelector(state=> ({
+    let {products, isLoading, error} = useSelector(state => 
+        ({
         products : state.allProducts.products,
         isLoading : state.allProducts.isLoading,
         error : state.allProducts.error
-    }));
+        })
+    );
+    let auth = useSelector(state=>state.firebase.auth);
     let classes = useStyles();
     let listing = products.map(product =>{
         let { id, title, image, price, category } = product;
         return (
             <>
             <Card className={classes.root} key={id}>
-                <Link to={`/products/${id}`}>
+                
+                    <Link to={`/products/${id}`}>
                     <img style={divStyle} src={image} alt='item'/>
                     <CardContent>
                         <Typography component='h2'> {title} </Typography>
                         <Typography component='h5'> {price} </Typography>
                         <Typography component='h5'> {category} </Typography>
                     </CardContent>
-                    
-                </Link>
+                    </Link>:
+                
+                
                 <Button onClick={()=>{
                     dispatch(favoriteProduct(product))
                 }} variant="contained" color="success">Add to Favorite</Button>

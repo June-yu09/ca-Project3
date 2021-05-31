@@ -20,6 +20,7 @@ function Detail() {
     const dispatch = useDispatch();
     const history = useHistory();
     
+
     const fetchDetail =async (idNum)=>{
         let response = await axios.get(`https://fakestoreapi.com/products/${idNum}`);
         dispatch(selectedProduct(response.data));

@@ -8,6 +8,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { signOut } from '../redux/actions/actions';
+
 
 
 
@@ -23,6 +26,10 @@ const useStyles = makeStyles((theme)=>({
 
 function Navbar() {
     const classes = useStyles();
+    const auth = useSelector(state=> state.firebase.auth);
+
+    
+
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -31,6 +38,11 @@ function Navbar() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const dispatch = useDispatch();
+    const logOut = () => {
+        dispatch(signOut());
+    }
+
 
     return (
         <div>
@@ -56,23 +68,36 @@ function Navbar() {
 
                 </Menu>
 
+
                 <Typography className={classes.title}>
                 <NavLink exact to='/'>Shop B</NavLink>
                 </Typography>
 
-                <Typography>
-                <NavLink exact to='/signin'>SignIn</NavLink>
-                </Typography>
-                
+            
+                <button onClick={logOut}>SignOut</button>
+                <Typography className={classes.title}>Welcome[{auth.email}]</Typography>
+
                 <Typography>
                 <NavLink exact to='/favorites'>💙</NavLink>
                 </Typography>
-                <Typography>
-                <NavLink exact to='/register'>Register</NavLink>
-                </Typography>
+                
                 <Typography>
                 <NavLink exact to='/cart'>Cart</NavLink>
                 </Typography>
+                             
+
+               
+                <Typography>
+                <NavLink exact to='/signin'>SignIn</NavLink>
+                </Typography>
+
+                <Typography>
+                <NavLink exact to='/signup'>SignUp</NavLink>
+                </Typography>
+
+                
+                
+                
                 
 
                 </Toolbar>
