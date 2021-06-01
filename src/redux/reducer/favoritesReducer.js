@@ -1,7 +1,7 @@
 import { ActionTypes } from '../actionTypes';
 
 
-const initState = {};
+const initState = {favorites : [] };
 
 const favoritesReducer = (state=initState, action) => {
     switch (action.type) {
