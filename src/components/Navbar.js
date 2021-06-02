@@ -73,27 +73,36 @@ function Navbar() {
                 <NavLink exact to='/'>Shop B</NavLink>
                 </Typography>
 
-            
-                <button onClick={logOut}>SignOut</button>
-                <Typography className={classes.title}>Welcome[{auth.email}]</Typography>
+                {
+                    auth.isEmpty ?
+                    <>
+                    <Typography>
+                    <NavLink exact to='/signin'>SignIn</NavLink>
+                    </Typography>
 
-                <Typography>
-                <NavLink exact to='/favorites'>💙</NavLink>
-                </Typography>
+                    <Typography>
+                    <NavLink exact to='/signup'>SignUp</NavLink>
+                    </Typography>
+                    </>:
+                    <>
+                    <button onClick={logOut}>SignOut</button>
+                    <Typography className={classes.title}>Welcome[{auth.email}]</Typography>
+
+                    <Typography>
+                    <NavLink exact to='/favorites'>💙</NavLink>
+                    </Typography>
+                    
+                    <Typography>
+                    <NavLink exact to='/cart'>Cart</NavLink>
+                    </Typography>
+                    
+                    </>
+                }
                 
-                <Typography>
-                <NavLink exact to='/cart'>Cart</NavLink>
-                </Typography>
                              
 
                
-                <Typography>
-                <NavLink exact to='/signin'>SignIn</NavLink>
-                </Typography>
-
-                <Typography>
-                <NavLink exact to='/signup'>SignUp</NavLink>
-                </Typography>
+                
 
                 
                 

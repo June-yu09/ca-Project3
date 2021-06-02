@@ -41,18 +41,39 @@ export const favoriteProduct = product => (dispatch, getState, { getFirebase }) 
         dispatch({ type: ActionTypes.ADD_FAVORITES, payload : product });
     })
     .catch(err=>{
-        dispatch({ type: ActionTypes.ADD_FAVORITES_ERR });
+        dispatch({ type: ActionTypes.ADD_FAVORITES_ERR, err });
     })
-
-
 }
 
-export const addToCart = product => {
-    return {
-        type : ActionTypes.ADD_TO_CART,
-        payload : product,
-    }
+export const addToCart = product => (dispatch, getState, { getFirebase }) => {
+    const firestore = getFirebase().firestore();
+    const userId = getState().firebase.auth.uid;
+
+    firestore
+    .collection('cart')
+    .add({
+        ...product,
+        userId : userId
+    })
+    .then(()=>{
+        dispatch({ type: ActionTypes.ADD_TO_CART, payload: product });
+    })
+    .catch(err=>{
+        dispatch({ type: ActionTypes.ADD_TO_CART_ERR, err })
+    })
 }
+export const removeFromCart = product => (dispatch, getState, { getFirebase }) => {
+    const firestore = getFirebase().firestore();
+
+    firestore
+    .collection('cart')
+    .doc(product)
+    .delete()
+    .then(()=>{
+        dispatch({ type: ActionTypes.REMOVE_FROM_CART });
+    })
+}
+
 
 export const signIn = credentials => (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();

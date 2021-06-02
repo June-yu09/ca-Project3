@@ -45,7 +45,7 @@ function Detail() {
                     <h2>{title}</h2>
                     <h5>product ID : {id}</h5>
                     <img style={divStyle} src={image} alt='productImage' />
-                    <h5>Price : { price }</h5>
+                    <h5>Price : { price }$ </h5>
                     <p>{ description }</p>
                     <p>Stock : {quan} </p>
                             
@@ -53,7 +53,7 @@ function Detail() {
                         dispatch(addToCart(product));
                      }}>Add to Cart</Button>
 
-                    <Button variant='outlined' onClick={()=>{ history.goBack() }}>Back to Homepage</Button>
+                    <Button variant='outlined' onClick={()=>{ history.goBack() }}>🔙Back to Hompage</Button>
                     {/* 나중에 하단에오는 스틱바 만들면 삭제하기 */}
                     
                 </>

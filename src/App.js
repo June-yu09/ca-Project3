@@ -1,5 +1,4 @@
 /* eslint-disabled */
-import './App.css';
 import Products from './components/Products';
 import { Route, Switch } from 'react-router-dom';
 import Detail from './components/Detail';
@@ -39,7 +38,7 @@ function App() {
           
       </Switch>
       
-      {/* 스티키푸터만들기(뒤로가기, 채팅) */}
+      {/* 스티키푸터만들기(뒤로가기) */}
       {/* 푸터만들기 */}
     </div>
   );

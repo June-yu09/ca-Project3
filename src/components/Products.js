@@ -34,7 +34,6 @@ const Products = ()=>{
         error : state.allProducts.error
         })
     );
-    let auth = useSelector(state=>state.firebase.auth);
     let classes = useStyles();
     let listing = products.map(product =>{
         let { id, title, image, price, category } = product;
@@ -49,7 +48,7 @@ const Products = ()=>{
                         <Typography component='h5'> {price} </Typography>
                         <Typography component='h5'> {category} </Typography>
                     </CardContent>
-                    </Link>:
+                    </Link>
                 
                 
                 <Button onClick={()=>{
