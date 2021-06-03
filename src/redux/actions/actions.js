@@ -33,7 +33,8 @@ export const favoriteProduct = product => (dispatch, getState, { getFirebase }) 
 
     firestore
     .collection('favorites')
-    .add({
+    .doc(`${product.id}`)
+    .set({
         ...product,
         userId : userId
     })
@@ -45,15 +46,30 @@ export const favoriteProduct = product => (dispatch, getState, { getFirebase }) 
     })
 }
 
+export const removeFavorite = product => (dispatch, getState, { getFirebase }) => {
+    const firestore = getFirebase().firestore();
+
+    firestore
+    .collection('favorites')
+    .doc(`${product.id}`)
+    .delete()
+    .then(()=>{
+        dispatch({ type : ActionTypes.REMOVE_FAVORITES});
+    })
+}
+
+
 export const addToCart = product => (dispatch, getState, { getFirebase }) => {
     const firestore = getFirebase().firestore();
     const userId = getState().firebase.auth.uid;
-
+    console.log(product.id);
+    
     firestore
     .collection('cart')
-    .add({
+    .doc(`${product.id}`)
+    .set({
         ...product,
-        userId : userId
+        userId : userId,
     })
     .then(()=>{
         dispatch({ type: ActionTypes.ADD_TO_CART, payload: product });
@@ -64,10 +80,10 @@ export const addToCart = product => (dispatch, getState, { getFirebase }) => {
 }
 export const removeFromCart = product => (dispatch, getState, { getFirebase }) => {
     const firestore = getFirebase().firestore();
-
+    console.log(product);
     firestore
     .collection('cart')
-    .doc(product)
+    .doc(`${product.id}`)
     .delete()
     .then(()=>{
         dispatch({ type: ActionTypes.REMOVE_FROM_CART });

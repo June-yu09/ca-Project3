@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { selectedProduct, removeSelectedProduct, addToCart } from '../redux/actions/actions';
+import { selectedProduct, removeSelectedProduct, addToCart, favoriteProduct } from '../redux/actions/actions';
 
 
 function Detail() {
@@ -16,6 +16,7 @@ function Detail() {
 
     const { productId } = useParams();
     const product = useSelector(state=> state.product);
+
     const { id, title, image, price, description, quan } = product;
     const dispatch = useDispatch();
     const history = useHistory();
@@ -37,6 +38,7 @@ function Detail() {
 
     return (
         <div>   
+            <Button variant='outlined' onClick={()=>{ history.goBack() }}>🔙Back to Hompage</Button>
 
             {
                 !title?
@@ -49,11 +51,14 @@ function Detail() {
                     <p>{ description }</p>
                     <p>Stock : {quan} </p>
                             
-                    <Button variant='outlined' onClick={()=>{ 
+                    <Button variant='outlined'><Typography onClick={()=>{ 
                         dispatch(addToCart(product));
-                     }}>Add to Cart</Button>
+                     }}>🛒Add to Cart</Typography></Button>
+                    <Button variant='outlined'><Typography onClick={()=>{ 
+                        dispatch(favoriteProduct(product));
+                     }}>💙Favorite💙</Typography></Button>
 
-                    <Button variant='outlined' onClick={()=>{ history.goBack() }}>🔙Back to Hompage</Button>
+
                     {/* 나중에 하단에오는 스틱바 만들면 삭제하기 */}
                     
                 </>

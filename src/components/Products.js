@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -51,9 +51,9 @@ const Products = ()=>{
                     </Link>
                 
                 
-                <Button onClick={()=>{
+                <Button variant="outlined"><Typography onClick={()=>{
                     dispatch(favoriteProduct(product))
-                }} variant="contained" color="success">Add to Favorite</Button>
+                }}>Add to Favorite</Typography></Button>
             </Card>
             </>
         )
