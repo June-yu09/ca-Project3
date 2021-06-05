@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -9,8 +9,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { signOut } from '../redux/actions/actions';
-
+import { signOut, authCheck } from '../redux/actions/actions';
+import firebase from '../fbConfig';
 
 
 
@@ -26,7 +26,24 @@ const useStyles = makeStyles((theme)=>({
 
 function Navbar() {
     const classes = useStyles();
+    const dispatch = useDispatch;
     const auth = useSelector(state=> state.firebase.auth);
+    const useruid = useSelector(state=> state.check);
+    const userAuth = ()=>{
+        firebase.auth().onAuthStateChanged((user)=>{
+            if(user){
+                console.log('user logged in');
+                console.log('from Navbar', user);
+                console.log('what is user.id?', user.uid);
+                dispatch(authCheck(user.uid));
+            }else{
+                console.log('no user');
+            }
+        })
+    }
+    useEffect(()=>{
+        userAuth();
+    },[])
 
     
 
@@ -38,7 +55,6 @@ function Navbar() {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const dispatch = useDispatch();
     const logOut = () => {
         dispatch(signOut());
     }
@@ -70,7 +86,7 @@ function Navbar() {
 
 
                 <Typography className={classes.title}>
-                <NavLink exact to='/'>Shop B</NavLink>
+                <NavLink exact to='/'>Shop</NavLink>
                 </Typography>
 
                 {

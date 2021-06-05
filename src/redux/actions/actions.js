@@ -54,8 +54,9 @@ export const removeFavorite = product => (dispatch, getState, { getFirebase }) =
     .doc(`${product.id}`)
     .delete()
     .then(()=>{
-        dispatch({ type : ActionTypes.REMOVE_FAVORITES});
+        dispatch({ type : ActionTypes.REMOVE_FAVORITES, payload: product});
     })
+    .catch(err=>dispatch({type: ActionTypes.REMOVE_FAVORITES_ERR, err}))
 }
 
 
@@ -97,12 +98,12 @@ export const signIn = credentials => (dispatch, getState, { getFirebase }) => {
     firebase
     .auth()
     .signInWithEmailAndPassword(credentials.email, credentials.password)
-    .then(()=>{
-        dispatch({ type: ActionTypes.SIGN_IN });
+    .then((user)=>{
+        dispatch({ type: ActionTypes.SIGN_IN, payload: user });
     })
     .catch(err=>{
         console.log('signIn error in actions');
-        dispatch({ type: ActionTypes.SIGN_IN_ERR}, err);
+        dispatch({ type: ActionTypes.SIGN_IN_ERR ,err});
     })
     
 }
@@ -129,6 +130,33 @@ export const signUp = (credentials) => (dispatch, getState, {getFirebase}) => {
         dispatch({type: ActionTypes.SIGN_UP});
     })
     .catch(err=> {
-        dispatch({type: ActionTypes.SIGN_UP_ERR}, err);
+        dispatch({type: ActionTypes.SIGN_UP_ERR, err});
     })
+}
+
+export const authCheck = (userUid) => {
+    return { 
+        type: ActionTypes.AUTH_CHECK ,
+        payload : userUid
+    }
+}
+export const favoriteCheck = (uid) => (dispatch, getState, {getFirebase}) => {
+    const firestore = getFirebase().firestore();
+
+    firestore
+    .collection('favorites')
+    .where('userId','==', uid)
+    .get()
+    .then((querySnapshot) => {
+        const newArr = [];
+        querySnapshot.forEach((doc) => {
+            console.log(doc.data());
+            newArr.push(doc.data());
+            }
+        )
+        console.log('newArray',newArr);
+        return dispatch({type: ActionTypes.FAVORITE_CHECK, payload: newArr})
+    })
+    
+    
 }

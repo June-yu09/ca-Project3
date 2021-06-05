@@ -10,6 +10,7 @@ import { Button } from '@material-ui/core';
 import { removeFromCart } from '../redux/actions/actions';
 
 
+
 const useStyles = makeStyles({
     root:{
         maxWidth: 440,
@@ -31,15 +32,18 @@ function Cart() {
     const userId = useSelector(state=> state.firebase.auth.uid);
     useFirestoreConnect([{
         collection : 'cart',
-        where : [
-            ['userId','==', userId]
-        ]
+        where : 
+            [['userId','==', userId]]
+        
     }]);
 
     const cart = useSelector(state=>state.firestore.ordered.cart);
+    const handleRemove = (product) => {
+        dispatch(removeFromCart(product));
+    }
 
     return (
-        <>
+        <div className={classes.root}>
         <Typography component='h2'>This is Shopping cart</Typography>
         {
             cart ? 
@@ -54,7 +58,7 @@ function Cart() {
                             <Typography component='h5'> {price} </Typography>
                             <Typography component='h5'> {category} </Typography>
                         </CardContent>
-                        <Button variant='outlined' onClick={()=>{ dispatch(removeFromCart(product)) }}>❌DELETE</Button>
+                        <Button variant='outlined' onClick={()=>{ handleRemove(product) }}>❌DELETE</Button>
                         
                     </Card>
 
@@ -69,7 +73,7 @@ function Cart() {
 
 
 
-        </>
+        </div>
     )
     
 }

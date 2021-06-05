@@ -1,14 +1,14 @@
 import { ActionTypes } from '../actionTypes';
 
 const initState = {
-    products : []
-};
+    products: []
+    };
 
 const cartReducer = (state=initState, action) => {
     switch (action.type) {
         case ActionTypes.ADD_TO_CART:
             console.log('Added to Cart');
-            return state;
+            return {...state, products : [ ...state.products, action.payload ]};
         case ActionTypes.ADD_TO_CART_ERR:
             console.log('cart err');
             return state;

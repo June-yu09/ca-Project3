@@ -34,6 +34,8 @@ const Products = ()=>{
         error : state.allProducts.error
         })
     );
+    console.log('after clicking add favorites state', useSelector(state=>state.firestore.ordered.favorites));
+
     let classes = useStyles();
     let listing = products.map(product =>{
         let { id, title, image, price, category } = product;
@@ -52,7 +54,7 @@ const Products = ()=>{
                 
                 
                 <Button variant="outlined"><Typography onClick={()=>{
-                    dispatch(favoriteProduct(product))
+                    dispatch(favoriteProduct(product));
                 }}>Add to Favorite</Typography></Button>
             </Card>
             </>
