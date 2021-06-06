@@ -6,7 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import { useFirestoreConnect } from 'react-redux-firebase';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { removeFavorite, addToCart, authCheck, favoriteCheck } from '../redux/actions/actions';
 import firebase from '../fbConfig';
 
@@ -29,16 +29,16 @@ function Favorites() {
     let classes = useStyles();
     const history = useHistory();
     const dispatch = useDispatch();
+
     const favorites = useSelector(state=>state.firestore.ordered.favorites);
     const useruid = useSelector(state=>state.check.userId);
     const userId = useSelector(state=> state.firebase.auth.uid);
 
 
+    
     const userAuth = ()=>{
         firebase.auth().onAuthStateChanged((user)=>{
             if(user){
-                console.log('from Navbar', user);
-                console.log('what is user.id?', user.uid);
                 dispatch(authCheck(user.uid));
             }else{
                 console.log('no user');
@@ -51,11 +51,6 @@ function Favorites() {
            dispatch(favoriteCheck(useruid));
         }
         getAuth();
-        // console.log(userId);
-        // console.log(useruid);
-        dispatch(favoriteCheck(useruid));
-        // console.log(favorites);
-
     },[favorites])
 
     
@@ -68,17 +63,24 @@ function Favorites() {
             [['userId','==',useruid]]
         
     }]);
+
     console.log('this is firestore state', useSelector(state=>state.firestore.ordered.favorites));
     console.log('this is favorites state', useSelector(state=>state.favorites.favorites));
-    
-    const favoritesList = useSelector(state=>state.favorites.favorites);
+
+    const favoriteList = useSelector(state=>state.favorites.favorites)
+
+    if ( !userId ){
+        return <>
+            <Redirect to='/signin' />
+        </>
+    }
 
     return (
         <div className={classes.root}>
             This is favorites page
         
         {
-            favoritesList && favoritesList.map(favorite=>{
+            favorites && favorites.map(favorite=>{
                 return <>
                 <Card className={classes.root} key={favorite.id}>
                         <img style={divStyle} src={favorite.image} alt='item'/>
@@ -96,11 +98,10 @@ function Favorites() {
             )
 
         }
-        <Button variant='outlined' onClick={()=>{ 
+        {/* <Button variant='outlined' onClick={()=>{ 
             console.log(userId);
             console.log(useruid);
-            //밑에건 비어있음 왜인가?
-            }}>BUTTON</Button>
+            }}>TEST BUTTON</Button> */}
 
         
         {

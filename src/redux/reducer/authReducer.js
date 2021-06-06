@@ -5,7 +5,7 @@ const initState = {};
 const authReducer = (state=initState, action) => {
     switch (action.type) {
         case ActionTypes.SIGN_IN:
-            return { ...state, user: action.payload };
+            return state;
         case ActionTypes.SIGN_IN_ERR:
             console.log('SignIn error');
             return state;

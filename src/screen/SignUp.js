@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -14,19 +14,22 @@ import { connect } from 'react-redux';
 
 
 
-
-const useStyles = (theme) =>({
-    root: {
-        minWidth: 400,
-        display: 'flex',
-        flexWrap: 'wrap',        
-    },
-    textField: {
-        margin: theme.spacing(3),
-        width: 300,
+const useStyles = (theme) => ({
+    paper: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
     },
     
-  });
+    form: {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: theme.spacing(3),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+  })
 
 class SignUp extends Component {
     state = {
@@ -52,37 +55,97 @@ class SignUp extends Component {
 
     render (){
         const { classes } = this.props;
+        const { auth, userId } = this.props;
         
+        if(userId){
+            return (<>
+                <Redirect to='/' />
+            </>)
+        }
         
         return (
-            <Container>
-                <Card className={classes.root}>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <div className={classes.paper}>
+
+                <Typography component="h1" variant="h5">
+                                Sign up
+                </Typography>
                     
-                    <CardContent>
-                        <form onSubmit={this.handleSubmit} className={classes.root} noValidate autoComplete="off">
-                            <Typography align='center' className={classes.textField} variant="h5" component="h2">Register</Typography>
-    
-                            <Typography align='center' className={classes.textField} variant="body2" component="p">Email</Typography>
-                                <TextField onChange={this.handleChange} autoFocus className={classes.textField} required id="email" label="Email" variant="outlined"/>
-                            <Typography align='center' className={classes.textField} variant="body2" component="p">Password</Typography>
-                                <TextField onChange={this.handleChange} className={classes.textField} required id="password" label="Password" variant="outlined"/>
-                            <Typography align='center' className={classes.textField} variant="body2" component="p">Confirm Password</Typography>
-                                <TextField onChange={this.handleChange} className={classes.textField} required id="confirmPassword" label="confirmPassword" variant="outlined"/>
-                            <Button type='submit' variant="contained" color="primary">Register</Button>
+                        <form onSubmit={this.handleSubmit} className={classes.form} noValidate autoComplete="off">
+                        <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                <TextField
+                                onChange={this.handleChange}
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email"
+                                    name="email"
+                                    autoComplete="email"
+                                />
+                                </Grid>
+
+                                <Grid item xs={12}>
+                                    <TextField
+                                    onChange={this.handleChange}
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        name="password"
+                                        label="Password"
+                                        type="password"
+                                        id="password"
+                                        autoComplete="current-password"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                    onChange={this.handleChange}
+                                        variant="outlined"
+                                        required
+                                        fullWidth
+                                        name="password"
+                                        label="confirmPassword"
+                                        type="password"
+                                        id="confirmPassword"
+                                        autoComplete="current-password"
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >
+                                Sign Up
+                            </Button>
+                            <Grid container justify="flex-end">
+                                <Grid item>
+                                    Already have an account? <NavLink exact to='/signin'>Sign In</NavLink>
+                                </Grid>
+                            </Grid>
+
+
+                            
 
                         </form>
     
-                    </CardContent>
-                </Card>
-                <Typography component='h3'>Already have an account? <NavLink exact to='/signin'>Sign In</NavLink></Typography>
+            </div>
+
             </Container>
         )
     }
 }
 const mapStateToProps = (state)=>{
     let auth = state.firebase.auth;
+    let userId = state.firebase.auth.uid;
     return {
-        auth : auth
+        auth : auth,
+        userId : userId
     }
 }
 

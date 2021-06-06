@@ -67,10 +67,9 @@ export const addToCart = product => (dispatch, getState, { getFirebase }) => {
     
     firestore
     .collection('cart')
-    .doc(`${product.id}`)
-    .set({
+    .add({
         ...product,
-        userId : userId,
+        userId : userId
     })
     .then(()=>{
         dispatch({ type: ActionTypes.ADD_TO_CART, payload: product });
@@ -84,10 +83,13 @@ export const removeFromCart = product => (dispatch, getState, { getFirebase }) =
     console.log(product);
     firestore
     .collection('cart')
-    .doc(`${product.id}`)
-    .delete()
-    .then(()=>{
-        dispatch({ type: ActionTypes.REMOVE_FROM_CART });
+    .where('id','==', product.id)
+    .get()
+    .then((querySnapshot)=>{
+        querySnapshot.forEach((doc)=>{
+            doc.ref.delete();
+        })
+        dispatch({ type: ActionTypes.REMOVE_FROM_CART, payload: product });
     })
 }
 
@@ -98,8 +100,8 @@ export const signIn = credentials => (dispatch, getState, { getFirebase }) => {
     firebase
     .auth()
     .signInWithEmailAndPassword(credentials.email, credentials.password)
-    .then((user)=>{
-        dispatch({ type: ActionTypes.SIGN_IN, payload: user });
+    .then(()=>{
+        dispatch({ type: ActionTypes.SIGN_IN});
     })
     .catch(err=>{
         console.log('signIn error in actions');
@@ -159,4 +161,21 @@ export const favoriteCheck = (uid) => (dispatch, getState, {getFirebase}) => {
     })
     
     
+}
+
+export const cartCheck = (uid) => (dispatch, getState, {getFirebase}) => {
+    const firestore = getFirebase().firestore();
+
+    firestore
+    .collection('cart')
+    .where('userId','==', uid)
+    .get()
+    .then((querySnapshot)=>{
+        const newArr = [];
+        querySnapshot.forEach((doc)=>{
+            newArr.push(doc.data());
+            }
+        )
+        return dispatch({ type : ActionTypes.CART_CHECK, payload: newArr })
+    })
 }

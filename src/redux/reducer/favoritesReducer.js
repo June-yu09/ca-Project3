@@ -24,7 +24,6 @@ const favoritesReducer = (state=initState, action) => {
             console.log('Remove Favorites err')
             return state;
         case ActionTypes.FAVORITE_CHECK:
-            console.log('how favorites get looks like', action.payload);
             return {...state, favorites : [...action.payload]};
         default:
             return state;

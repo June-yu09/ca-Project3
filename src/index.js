@@ -6,20 +6,17 @@ import { Provider } from 'react-redux';
 import { ReactReduxFirebaseProvider, getFirebase } from 'react-redux-firebase';
 import { createFirestoreInstance } from 'redux-firestore';
 import firebase from './fbConfig';
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import reducers from './redux/reducer/index';
 import thunk from 'redux-thunk';
 
 
 
-const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 
 const store = createStore(
     reducers,
-    composeEnhancer(
-        applyMiddleware(thunk.withExtraArgument({getFirebase}))
-        )
+    applyMiddleware(thunk.withExtraArgument({getFirebase}))
     );
 
 
@@ -33,14 +30,12 @@ const rrfProps = {
 
 
 ReactDOM.render(
-  <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
         <ReactReduxFirebaseProvider {...rrfProps}>
           <App />
         </ReactReduxFirebaseProvider>
       </Provider>
-    </BrowserRouter>
-  </React.StrictMode>,
+    </BrowserRouter>,
   document.getElementById('root')
 );

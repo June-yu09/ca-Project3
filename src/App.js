@@ -19,7 +19,6 @@ function App() {
   return (
     <div className="App">
       <Navbar />
-      {/* 좀 있어보이게 점보트론넣기 */}
 
 
 
@@ -38,8 +37,6 @@ function App() {
           
       </Switch>
       
-      {/* 스티키푸터만들기(뒤로가기) */}
-      {/* 푸터만들기 */}
     </div>
   );
 }
