@@ -1,6 +1,14 @@
 import { useParams, useHistory } from 'react-router-dom';
-import { Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import CardMedia from '@material-ui/core/CardMedia';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -8,11 +16,32 @@ import axios from 'axios';
 import { selectedProduct, removeSelectedProduct, addToCart, favoriteProduct } from '../redux/actions/actions';
 
 
+
+const useStyles = makeStyles((theme) => ({
+    cardGrid: {
+      paddingTop: theme.spacing(8),
+      paddingBottom: theme.spacing(8),
+    },
+    card: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    cardMedia: {
+      paddingTop: '100%',
+      height: '500px'
+    },
+    cardContent: {
+      flexGrow: 1,
+    },
+    footer: {
+      backgroundColor: theme.palette.background.paper,
+      padding: theme.spacing(6),
+    },
+  }))
+
 function Detail() {
-    const divStyle = {
-        width: '450px',
-        height: '450px'
-    }
+    
 
     const { productId } = useParams();
     const product = useSelector(state=> state.product);
@@ -20,7 +49,8 @@ function Detail() {
     const { id, title, image, price, description, quan } = product;
     const dispatch = useDispatch();
     const history = useHistory();
-    
+    let classes = useStyles();
+
 
     const fetchDetail =async (idNum)=>{
         let response = await axios.get(`https://fakestoreapi.com/products/${idNum}`);
@@ -38,34 +68,47 @@ function Detail() {
 
     return (
         <div>   
-            <Button variant='outlined' onClick={()=>{ history.goBack() }}>🔙Back to Hompage</Button>
+            <Button color="primary" onClick={()=>{ history.goBack() }}>🔙Back to Hompage</Button>
 
             {
                 !title?
                 <Typography component='h2'> Loading </Typography>:
                 <>
-                    <h2>{title}</h2>
-                    <h5>product ID : {id}</h5>
-                    <img style={divStyle} src={image} alt='productImage' />
-                    <h5>Price : { price }$ </h5>
-                    <p>{ description }</p>
-                    <p>Stock : {quan} </p>
-                            
-                    <Button variant='outlined'><Typography onClick={()=>{ 
-                        dispatch(addToCart(product));
-                     }}>🛒Add to Cart</Typography></Button>
-                    <Button variant='outlined'><Typography onClick={()=>{ 
-                        dispatch(favoriteProduct(product));
-                     }}>💙Favorite💙</Typography></Button>
+                <CssBaseline />
+                <Container className={classes.cardGrid} maxWidth="md">
+                            <Card className={classes.card} key={id}>
+                                <CardMedia
+                                className={classes.cardMedia}
+                                image={image}
+                                title='product image'
+                                />
+                                <CardContent className={classes.cardContent}>
+                                    <Typography gutterBottom variant="h5" component="h2"> {title} </Typography>
+                                    <Typography component='p'>Product Id {id} </Typography>
+                                    <Typography > {price}$ </Typography>
+                                    <Typography component='h5'> {description} </Typography>
 
+                                </CardContent>
 
-                    {/* 나중에 하단에오는 스틱바 만들면 삭제하기 */}
-                    
+                                <CardActions>
+                                <Button size="small" color="primary"><Typography onClick={()=>{
+                                    dispatch(favoriteProduct(product));
+                                }}>💟Favorite</Typography></Button>
+                                <Button size="small" color="primary"><Typography onClick={()=>{
+                                    dispatch(addToCart(product));
+                                }}>🛒Add to Cart</Typography></Button>
+                                </CardActions>
+                            </Card>
+                </Container>
                 </>
 
             }     
             
-            
+            <footer className={classes.footer}>
+                <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+                    make a project by using react, redux, firebase, material ui
+                </Typography>
+            </footer>
         </div>
     )
 }
