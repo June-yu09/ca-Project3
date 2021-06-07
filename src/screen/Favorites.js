@@ -77,7 +77,6 @@ function Favorites() {
     
 
 
-    // console.log('what is hook userid', userId);
     useFirestoreConnect([{
         collection: 'favorites',
         where:
@@ -113,9 +112,8 @@ function Favorites() {
             <Grid container spacing={4}>
         
             {
-                favorites && favorites.map(favorite=>{
-                    return (
-                    <>
+                favoriteList && favoriteList.map(favorite=>{ 
+                    return (<>
                         <Grid item key={favorite.id} xs={12} sm={6} md={4}>
                             <Card className={classes.card} key={favorite.id}>
                                 <CardMedia 
@@ -134,19 +132,19 @@ function Favorites() {
                                 </CardActions>
                             </Card>
                         </Grid>
-                    </>
-                    )
+                    </>)
+                    
                     }
                 )
-
             }
             
-                
-                {
-                    !favorites && <Typography component='h1'> Your favorite is empty </Typography>
+            
+            {
+                !favorites&&
+                <Typography component='h1'> Your favorite is empty </Typography>
 
-                }
-        
+            }
+    
                 </Grid>
             </Container>
             <footer className={classes.footer}>

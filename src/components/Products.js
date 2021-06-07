@@ -58,6 +58,7 @@ const Products = ()=>{
     const userId = useSelector(state=> state.firebase.auth.uid);
     let classes = useStyles();
 
+    const cartList = useSelector(state=>state.cart.products);
 
     const userAuth = ()=>{
         firebase.auth().onAuthStateChanged((user)=>{
@@ -73,7 +74,11 @@ const Products = ()=>{
             await userAuth();
             dispatch(cartCheck(useruid));
         }
-        console.log(cart);
+        ////////////////
+        console.log('use Effect renders in Products Compo')
+        console.log('Cart in Products Compo',cart);
+        console.log('cartList length in Products Compo:', cartList);
+        ////////////////
         getAuth();
     },[cart, userId])
 
@@ -124,6 +129,7 @@ const Products = ()=>{
                             dispatch(favoriteProduct(product));
                         }}>💟</Typography></Button>
                         <Button size="small" color="primary"><Typography onClick={()=>{
+                            console.log('button clicked!!!')
                             dispatch(addToCart(product));
                         }}>🛒</Typography></Button>
                     </CardActions>
@@ -139,10 +145,10 @@ const Products = ()=>{
             <div className={classes.heroContent}>
                 <Container maxWidth="sm" >
                         <Typography component="h3" variant="h3" align="center" color="textPrimary" gutterBottom>
-                    SHOP
+                    🛍SHOP🛍
                     </Typography>
                     <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                    shop
+                    👕👚💍🧥👛🖥💸
                     </Typography>
                     <div className={classes.heroButtons}>
                     <Grid container spacing={2} justify="center">

@@ -118,9 +118,9 @@ function Cart() {
             <Grid container spacing={4}>
 
         {
-            (cartList) ? 
+            (cartList) &&
             cartList.map(product=>{
-                let { id, title, category, price, image, amount } = product;
+                let { id, title, category, price, image } = product;
                 return(
                     <>
                     <Grid item key={id} xs={12} sm={6} md={4}>
@@ -135,7 +135,6 @@ function Cart() {
                             <CardContent className={classes.cardContent}>
                             <Typography gutterBottom variant="h5" component="h2"> {title} </Typography>
                             <Typography> {price}$ </Typography>
-                            <Typography>Amount :  {amount} </Typography>
                             </CardContent>
 
                             <CardActions>
@@ -146,9 +145,12 @@ function Cart() {
                     </Grid>
                     </>
                 )
-            }):
-            <Typography component='h2'> Your shopping cart is empty </Typography>
+            })
+        }
 
+        {
+            cartList.length ===0 &&
+            <Typography>It is empty</Typography>
         }
         
        

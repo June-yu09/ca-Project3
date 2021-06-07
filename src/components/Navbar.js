@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles , useTheme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import { NavLink, Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { signOut } from '../redux/actions/actions';
 import firebase from '../fbConfig';
@@ -29,8 +29,6 @@ const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
     },
-    
-    
     appBar: {
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
@@ -110,6 +108,7 @@ function Navbar() {
     const logOut = () => {
         dispatch(signOut());
     }
+
     useFirestoreConnect([{
         collection : 'cart',
         where : 
@@ -117,9 +116,16 @@ function Navbar() {
         
     }]);
 
-    
-    
     const cartList = useSelector(state=>state.cart.products);
+
+    useEffect(()=>{
+      console.log('cartList in navbar is', cartList);
+      console.log('useEffect in Navbar renders')
+    },[cartList.length])
+
+
+    
+    
 
 
     return (
@@ -162,7 +168,7 @@ function Navbar() {
                             </Typography>
                             {
                                 cartList &&
-                                <Typography flexGrow={3} noWrap> {cartList.length} </Typography>
+                                <Typography style={{ backgroundColor: '#ff1a8c', height: '3vh' }} flexGrow={3} noWrap> '{cartList.length}' </Typography>
                             }
 
                         </>
