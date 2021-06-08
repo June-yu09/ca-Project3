@@ -46,12 +46,10 @@ class SignIn extends Component {
         this.setState({
             [e.target.id] : e.target.value,
         })
-        console.log(e.target.value)
-        console.log(e.target.id)
+
     }
     handleSubmit = e =>{
         e.preventDefault();
-        console.log(this.state);
         this.props.signInAction(this.state);
         this.props.history.push('/');
     }

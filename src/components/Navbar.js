@@ -7,7 +7,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { signOut, cartCheck } from '../redux/actions/actions';
-import firebase from '../fbConfig';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import LocalGroceryStoreIcon from '@material-ui/icons/LocalGroceryStore';
 

@@ -64,7 +64,6 @@ function Cart() {
         cartList.forEach(product=>{
             init += product.price;
         })
-        console.log(init);
         return init;
     }
 

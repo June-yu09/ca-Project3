@@ -15,13 +15,10 @@ const favoritesReducer = (state=initState, action) => {
                 return {...state, favorites: [...state.favorites , action.payload]};
             }
         case ActionTypes.ADD_FAVORITES_ERR:
-            console.log('Added Error');
             return state;
         case ActionTypes.REMOVE_FAVORITES:
-            console.log('remove favorite success')
             return {...state, favorites: [ ...state.favorites.filter(fav=> fav!==action.payload) ]};
         case ActionTypes.REMOVE_FAVORITES_ERR:
-            console.log('Remove Favorites err')
             return state;
         case ActionTypes.FAVORITE_CHECK:
             return {...state, favorites : [...action.payload]};

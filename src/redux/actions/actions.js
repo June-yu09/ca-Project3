@@ -173,11 +173,9 @@ export const favoriteCheck = (uid) => (dispatch, getState, {getFirebase}) => {
     .then((querySnapshot) => {
         const newArr = [];
         querySnapshot.forEach((doc) => {
-            console.log(doc.data());
             newArr.push(doc.data());
             }
         )
-        console.log('newArray',newArr);
         return dispatch({type: ActionTypes.FAVORITE_CHECK, payload: newArr})
     })
     // because delete item makes lagging in state.firestore, I use redux state for displaying(updating) item.
