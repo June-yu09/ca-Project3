@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -16,7 +16,7 @@ import Container from '@material-ui/core/Container';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { useFirestoreConnect } from 'react-redux-firebase';
-import { removeFromCart, authCheck, cartCheck } from '../redux/actions/actions';
+import { removeFromCart, authCheck, cartCheck, clearCart } from '../redux/actions/actions';
 import firebase from '../fbConfig';
 
 
@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.background.paper,
       padding: theme.spacing(6),
     },
+    
   }))
 
 
@@ -53,10 +54,19 @@ function Cart() {
     const history = useHistory();
     const dispatch = useDispatch();
 
+
     const cart = useSelector(state=>state.firestore.ordered.cart);
     const useruid = useSelector(state=>state.check.userId);
     const userId = useSelector(state=> state.firebase.auth.uid);
 
+    const totalPrice = ()=>{
+        let init = 0;
+        cartList.forEach(product=>{
+            init += product.price;
+        })
+        console.log(init);
+        return init;
+    }
 
 
     const userAuth = ()=>{
@@ -74,7 +84,7 @@ function Cart() {
             dispatch(cartCheck(useruid));
         }
         getAuth();
-    },[ cart])
+    },[cart])
     
     useFirestoreConnect([{
         collection : 'cart',
@@ -120,7 +130,7 @@ function Cart() {
         {
             (cartList) &&
             cartList.map(product=>{
-                let { id, title, category, price, image } = product;
+                let { id, title, price, image } = product;
                 return(
                     <>
                     <Grid item key={id} xs={12} sm={6} md={4}>
@@ -157,6 +167,27 @@ function Cart() {
 
             </Grid>
         </Container>
+        {
+            cartList &&
+            <Container maxWidth="sm" >
+                <Typography component="h5" variant="h5" align="center" color="textPrimary" gutterBottom>💸 Total: { totalPrice() }$ 💸</Typography>
+            </Container>
+        }
+
+            <Button style={{ 
+                justifyContent: 'center',
+                alignItems: "center"}} 
+                fullWidth variant='outlined' 
+                size='large' 
+                align='center' 
+                color='success' 
+                onClick={()=>{
+                    history.push('/ordered');
+                    dispatch(clearCart());
+                    }}>
+                        💸 PAY 💸</Button>
+
+
 
         <footer className={classes.footer}>
                 <Typography variant="subtitle1" align="center" color="textSecondary" component="p">

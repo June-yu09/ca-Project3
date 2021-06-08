@@ -10,17 +10,18 @@ export const productReducer = (state=initState, action) => {
     switch (action.type) {
         case ActionTypes.FETCH_PRODUCTS_REQUEST:
             return {...state, isLoading : action.payload};
-
         case ActionTypes.FETCH_PRODUCTS_SUCCESS:
-            let productList = {...state, products : action.payload};
-            let newList = productList.products.map(product => {
-            return {...product, stock: 5, amount: 1};
-            })
-            return {...state, products : [...newList], isLoading : false};
-        
+            return {...state, products : action.payload , isLoading : false};
         case ActionTypes.FETCH_PRODUCTS_FAIL:
-            return {...state, isLoading: false , error: action.payload}
-
+            return {...state, isLoading: false , error: action.payload};
+        case ActionTypes.FETCH_MEN_PRODUCTS:
+            return {...state, products : action.payload};
+        case ActionTypes.FETCH_WOMEN_PRODUCTS:
+            return {...state, products : action.payload};
+        case ActionTypes.FETCH_JE_PRODUCTS:
+            return {...state, products : action.payload};
+        case ActionTypes.FETCH_EL_PRODUCTS:
+            return {...state, products : action.payload};
         default:
             return state;
     }
@@ -28,7 +29,7 @@ export const productReducer = (state=initState, action) => {
 export const selectedProductReducer = (state={}, action) =>{
     switch (action.type) {
         case ActionTypes.SELECTED_PRODUCT:
-            return {...state, ...action.payload, amount : 1};
+            return {...state, ...action.payload};
         case ActionTypes.REMOVE_SELECTED_PRODUCT:
             return {};
         default:

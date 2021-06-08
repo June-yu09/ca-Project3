@@ -11,8 +11,28 @@ export const fetchProducts = () => async (dispatch) => {
     } catch (err){
         return dispatch({type: ActionTypes.FETCH_PRODUCTS_FAIL })
     }
-  
 }
+
+export const fetchMenProducts = () => async (dispatch) => {
+    const response = await axios.get("https://fakestoreapi.com/products/category/men's%20clothing");
+    return dispatch({ type: ActionTypes.FETCH_MEN_PRODUCTS, payload: response.data })
+}
+
+export const fetchWomenProducts = () => async (dispatch) => {
+    const response = await axios.get("https://fakestoreapi.com/products/category/women's%20clothing");
+    return dispatch({ type: ActionTypes.FETCH_WOMEN_PRODUCTS, payload: response.data })
+}
+
+export const fetchJeProducts = () => async (dispatch) => {
+    const response = await axios.get("https://fakestoreapi.com/products/category/jewelery");
+    return dispatch({ type: ActionTypes.FETCH_JE_PRODUCTS, payload: response.data })
+}
+
+export const fetchElProducts = () => async (dispatch) => {
+    const response = await axios.get("https://fakestoreapi.com/products/category/electronics");
+    return dispatch({ type: ActionTypes.FETCH_EL_PRODUCTS, payload: response.data })
+}
+
 
 export const selectedProduct = product => {
     return {
@@ -44,6 +64,7 @@ export const favoriteProduct = product => (dispatch, getState, { getFirebase }) 
     .catch(err=>{
         dispatch({ type: ActionTypes.ADD_FAVORITES_ERR, err });
     })
+    //since I don't want to put repeated item, I put doc name as product ID
 }
 
 export const removeFavorite = product => (dispatch, getState, { getFirebase }) => {
@@ -63,7 +84,6 @@ export const removeFavorite = product => (dispatch, getState, { getFirebase }) =
 export const addToCart = product => (dispatch, getState, { getFirebase }) => {
     const firestore = getFirebase().firestore();
     const userId = getState().firebase.auth.uid;
-    console.log(product.id);
     
     firestore
     .collection('cart')
@@ -80,15 +100,16 @@ export const addToCart = product => (dispatch, getState, { getFirebase }) => {
 }
 export const removeFromCart = product => (dispatch, getState, { getFirebase }) => {
     const firestore = getFirebase().firestore();
-    console.log(product);
+
     firestore
     .collection('cart')
     .where('id','==', product.id)
     .get()
     .then((querySnapshot)=>{
-        querySnapshot.forEach((doc)=>{
-            doc.ref.delete();
-        })
+        querySnapshot.docs[0].ref.delete();
+        //delete the first matching data
+    })
+    .then(()=>{
         dispatch({ type: ActionTypes.REMOVE_FROM_CART, payload: product });
     })
 }
@@ -159,7 +180,7 @@ export const favoriteCheck = (uid) => (dispatch, getState, {getFirebase}) => {
         console.log('newArray',newArr);
         return dispatch({type: ActionTypes.FAVORITE_CHECK, payload: newArr})
     })
-    
+    // because delete item makes lagging in state.firestore, I use redux state for displaying(updating) item.
     
 }
 
@@ -177,5 +198,23 @@ export const cartCheck = (uid) => (dispatch, getState, {getFirebase}) => {
             }
         )
         return dispatch({ type : ActionTypes.CART_CHECK, payload: newArr })
+    })
+}
+
+export const clearCart = () =>(dispatch, getState, { getFirebase }) => {
+    const firestore = getFirebase().firestore();
+    const userId = getState().firebase.auth.uid;
+
+    firestore
+    .collection('cart')
+    .where('userId','==', userId)
+    .get()
+    .then((querySnapshot)=>{
+        querySnapshot.forEach((doc)=>{
+            doc.ref.delete();
+        })
+    })
+    .then(()=>{
+        dispatch({ type : ActionTypes.CLEAR_CART});
     })
 }

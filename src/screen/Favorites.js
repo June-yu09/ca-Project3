@@ -84,6 +84,13 @@ function Favorites() {
         
     }]);
 
+    useFirestoreConnect([{
+        collection : 'cart',
+        where : 
+            [['userId','==', useruid]]
+        
+    }]);
+
     console.log('this is firestore state', useSelector(state=>state.firestore.ordered.favorites));
     console.log('this is favorites state', useSelector(state=>state.favorites.favorites));
 

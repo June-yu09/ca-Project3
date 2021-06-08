@@ -1,4 +1,6 @@
 import React from 'react';
+import { useFirestoreConnect } from 'react-redux-firebase';
+import { useSelector } from 'react-redux';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -34,9 +36,18 @@ const useStyles = makeStyles((theme) => ({
     },
   }))
 
-function About() {
+function OrderSuccess() {
     let classes = useStyles();
     const history = useHistory();
+    const userId = useSelector(state=> state.firebase.auth.uid);
+
+
+    useFirestoreConnect([{
+        collection : 'cart',
+        where : 
+            [['userId','==', userId]]
+        
+    }]);
 
     return (
         <div>
@@ -44,7 +55,7 @@ function About() {
             <Button color='success' onClick={()=>{ history.push('/') }}>🔙Go to Mainpage</Button>
             <div className={classes.heroContent}>
                 <Container maxWidth="sm" >
-                <Typography component="h4" variant="h4" align="center" color="textPrimary" gutterBottom>📌About us</Typography>
+                <Typography component="h4" variant="h4" align="center" color="textPrimary" gutterBottom>Thank you for your order!💸</Typography>
                 </Container>
             </div>
             <Container className={classes.cardGrid} maxWidth="md">
@@ -53,6 +64,7 @@ function About() {
                                 
                                 <CardContent className={classes.cardContent}>
                                     <Typography>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</Typography>
+                                    <Button size="large" color="primary" onClick={()=>{ history.push('/') }}>✔️Go back to Home</Button>
                                 </CardContent> 
                             </Card>
                 </Grid>
@@ -65,4 +77,4 @@ function About() {
         </div>
     )
 }
-export default About;
+export default OrderSuccess;

@@ -4,6 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardMedia from '@material-ui/core/CardMedia';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -13,7 +14,7 @@ import Container from '@material-ui/core/Container';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts, favoriteProduct, authCheck, cartCheck, addToCart } from '../redux/actions/actions';
+import { fetchProducts, favoriteProduct, authCheck, cartCheck, addToCart, fetchMenProducts, fetchWomenProducts, fetchJeProducts, fetchElProducts } from '../redux/actions/actions';
 import firebase from '../fbConfig';
 import { useFirestoreConnect } from 'react-redux-firebase';
 
@@ -47,6 +48,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.background.paper,
       padding: theme.spacing(6),
     },
+    circle: {
+        display: 'flex',
+        '& > * + *': {
+        marginLeft: theme.spacing(2),
+    },
+    }
   }))
 
 
@@ -74,11 +81,6 @@ const Products = ()=>{
             await userAuth();
             dispatch(cartCheck(useruid));
         }
-        ////////////////
-        console.log('use Effect renders in Products Compo')
-        console.log('Cart in Products Compo',cart);
-        console.log('cartList length in Products Compo:', cartList);
-        ////////////////
         getAuth();
     },[cart, userId])
 
@@ -129,7 +131,6 @@ const Products = ()=>{
                             dispatch(favoriteProduct(product));
                         }}>💟</Typography></Button>
                         <Button size="small" color="primary"><Typography onClick={()=>{
-                            console.log('button clicked!!!')
                             dispatch(addToCart(product));
                         }}>🛒</Typography></Button>
                     </CardActions>
@@ -154,31 +155,31 @@ const Products = ()=>{
                     <Grid container spacing={2} justify="center">
                         
                         <Grid item>
-                        <Button variant="outlined" color="primary">
+                        <Button onClick={()=>{ dispatch(fetchWomenProducts()) }} variant="outlined" color="primary">
                             Women
                         </Button>
                         </Grid>
 
                         <Grid item>
-                        <Button variant="outlined" color="primary">
+                        <Button onClick={()=>{ dispatch(fetchMenProducts()) }} variant="outlined" color="primary">
                             Men
                         </Button>
                         </Grid>
 
                         <Grid item>
-                        <Button variant="outlined" color="primary">
+                        <Button onClick={()=>{ dispatch(fetchJeProducts()) }} variant="outlined" color="primary">
                             Jewelery
                         </Button>
                         </Grid>
 
                         <Grid item>
-                        <Button variant="outlined" color="primary">
+                        <Button onClick={()=>{ dispatch(fetchElProducts()) }} variant="outlined" color="primary">
                             Electronics
                         </Button>
                         </Grid>
 
                         <Grid item>
-                        <Button variant="outlined" color="primary">
+                        <Button onClick={()=>{ dispatch(fetchProducts()) }} variant="outlined" color="primary">
                             All
                         </Button>
                         </Grid>
@@ -191,19 +192,15 @@ const Products = ()=>{
                     {
                     isLoading?
                     <>
-                    <Typography component='h1'> Loading </Typography>
-                    <Typography component='h1'> Loading </Typography>
-                    <Typography component='h1'> Loading </Typography>
-                    <Typography component='h1'> Loading </Typography>
-                    <Typography component='h1'> Loading </Typography>
-
+                    <div className={classes.circle}>
+                    <CircularProgress />
+                    </div>
+                    <Typography component='h1' variant='h1'> Loading </Typography>
                     </>:
                     <>{listing}</>
                     }
 
-                    {
-                        error.length!==0 && <div> Something went wrong {error} </div>
-                    }
+                   
                 </Grid>
             </Container>
 

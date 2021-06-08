@@ -6,7 +6,7 @@ import { makeStyles , useTheme } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { signOut } from '../redux/actions/actions';
+import { signOut, cartCheck } from '../redux/actions/actions';
 import firebase from '../fbConfig';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import LocalGroceryStoreIcon from '@material-ui/icons/LocalGroceryStore';
@@ -116,12 +116,10 @@ function Navbar() {
         
     }]);
 
-    const cartList = useSelector(state=>state.cart.products);
 
     useEffect(()=>{
-      console.log('cartList in navbar is', cartList);
-      console.log('useEffect in Navbar renders')
-    },[cartList.length])
+      dispatch(cartCheck(useruid));
+    },[cart])
 
 
     
@@ -167,8 +165,8 @@ function Navbar() {
                             <LocalGroceryStoreIcon color='action'></LocalGroceryStoreIcon>
                             </Typography>
                             {
-                                cartList &&
-                                <Typography style={{ backgroundColor: '#ff1a8c', height: '3vh' }} flexGrow={3} noWrap> '{cartList.length}' </Typography>
+                                cart &&
+                                <Typography style={{ backgroundColor: '#ff1a8c', height: '3vh' }} flexGrow={3} noWrap> '{cart.length}' </Typography>
                             }
 
                         </>

@@ -19,7 +19,8 @@ const cartReducer = (state=initState, action) => {
             return { ...state, products : [ ...state.products.filter(product=>product!==action.payload) ] }
         case ActionTypes.CART_CHECK:
             return { ...state, products : action.payload }
-        
+        case ActionTypes.CLEAR_CART:
+            return {};
         default:
             return state;
     }

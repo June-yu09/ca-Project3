@@ -7,8 +7,8 @@ import About from './screen/About';
 import SignUp from './screen/SignUp';
 import SignIn from './screen/SignIn';
 import Favorites from './screen/Favorites';
-import Cart from './screen/Cart'
-;
+import Cart from './screen/Cart';
+import OrderSuccess from './screen/OrderSuccess';
 
 function App() {
 
@@ -26,7 +26,8 @@ function App() {
 
         <Route exact path='/' component={Products} />   
         <Route path='/products/:productId' component={Detail} />
-        <Route path='/about' component={About} /> 
+        <Route path='/about' component={About} />
+        <Route path='/ordered' component={OrderSuccess} /> 
         <Route path='/signup' component={SignUp} />
         <Route path='/signin' component={SignIn} />
         <Route path='/favorites' component={Favorites} />
