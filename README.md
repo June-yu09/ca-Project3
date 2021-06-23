@@ -8,3 +8,5 @@ Used framework/library
 -firebase
 -firestore
 -material UI
+
+https://trusting-meninsky-8f076b.netlify.app/
